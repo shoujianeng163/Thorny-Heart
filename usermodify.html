@@ -1,0 +1,184 @@
+<%@ page language="java" import="java.util.*" pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="${base }">
+
+    <title>修改个人信息</title>
+    <script src="${base }/js/meizzDate.js" ></script>
+    <style type="">
+        .main{
+            width: 360px;
+            background-color: rgba(255,255,255,0.8);
+            height: 450px;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .p1{
+            color: #757c80;
+            font-family: 微软雅黑;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .p2{
+            margin-left: -10px;
+            color: #757c80;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .p3{
+            padding-top: 10px;
+            display: inline-block;
+            color: hsla(0,0%,100%,.5);
+        }
+        .logo{
+            height: 70px;
+            float: left;
+            margin-top: 10px;
+            margin-left: 80px;
+
+        }
+
+        .login{
+            width: 544px;
+            background: white;
+            height: 550px;
+            filter:alpha(opacity:30);
+            opacity:1;
+            float: right;
+        }
+        .form-group{
+            width: 80px;
+            height: 300px;
+            margin-top: 50px;
+            margin-left: 0px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 20px;
+            background-color: #464a4d;
+            text-align: left;
+            color: hsla(0,0%,100%,.5);
+            font-size: 12px;
+        }
+        .head{
+            float: left;
+        }
+        .btn{
+
+        }
+
+
+        body {  background-size: cover; background:url("${base}/images/bg1.jpg ");}
+    </style>
+    <script type="text/javascript" language="javascript">
+        var ecode =[<c:forEach items="${list}" var="item" varStatus="i"><c:if test="${i.index!=0}">,</c:if>{'eid':'${item.eid}','ecode':'${item.ecode}'}</c:forEach>];
+        var flag=0;
+        function checkForm(){
+            var form = document.forms[0];
+
+            if(form.epassword.value=="" || form.epassword.value.length<=0){
+                alert("请输入密码！");
+                form.epassword.focus();
+                return false;
+            }
+
+            if(form.erealname.value=="" || form.erealname.value.length<=0){
+                alert("请输入姓名！");
+                form.erealname.focus();
+                return false;
+            }
+
+            if(form.etel.value=="" || form.etel.value.length<=0){
+                alert("请输入联系电话！");
+                form.etel.focus();
+                return false;
+            }
+            if(form.email.value=="" || form.email.value.length<=0){
+                alert("请输入邮箱！");
+                form.email.focus();
+                return false;
+            }
+
+            return true;
+        }
+        function checkcode()
+        {
+            var form = document.forms[0];
+            var i ;
+            for(i=0;i<ecode.length;i++)
+            {
+                if(ecode[i].ecode==form.ecode.value&&form.eid.value!=ecode[i].eid)
+                {
+                    alert("会员编号已存在！");
+                    form.ecode.focus();
+                    flag=1;
+                    return false;
+                }
+                else
+                {
+                    flag=0;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body >
+
+<form action="${base }/servlet/EmployeeServlet?method=updateEmployee" method="post"
+      onsubmit="return checkForm()">
+
+                <input type="hidden" id="flag" name="flag" value="${flag}">
+                                <input type="hidden" value="${employee.eid }" name="eid" id="eid">
+                                <input type="hidden" value="${employee.ecode }" name="ecode" id="ecode">
+                                <input type="hidden" value="${employee.ename }" name="ename" id="ename">
+    <div class="head">
+        <img src="${base}/images/logo2.png" >
+    </div>
+
+    <div class="container">
+
+        <div class="main">
+            <div class="logo">
+                <img src="${base}/images/logo.png" >
+            </div>
+
+
+            <form role="form">
+                <div class="form-group">
+                    <p3 style=" margin-left: 31px;margin-top: 10px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">${employee.ename }</p3>
+                    <input type="password" id="epassword" name="epassword" value="${employee.epassword }"  class="form-control" placeholder="password" style="margin-left: 31px; margin-top: 5px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                    <input type="text" id="erealname" name="erealname" value="${employee.erealname }" class="form-control" placeholder="name" style="margin-left: 31px; margin-top: 5px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                    <input type="text" id="etel" name="etel"   value="${employee.etel}"  class="form-control" placeholder="tel" style="margin-left: 31px; margin-top: 5px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                    <input type="text" id="email" name="email"   value="${employee.email }"  class="form-control" placeholder="mail" style="margin-left: 31px; margin-top: 5px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                    <input type="text" id="eqq" name="eqq" value="${employee.eqq}"  class="form-control" placeholder="qq" style="margin-left: 31px; margin-top: 5px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                </div>
+                <div class="btn">
+                    <input type="submit" style="margin-left: 39px;float: left;border-style: none;height:40px;width: 120px;font-family: inherit;background-color: #25c6ff;color: #fff;font-weight: 700;" value="提  交" />
+                    <input class="box" type="button" style="margin-left: 20px;float: right;border-style: none;height:40px;width: 120px;font-family: inherit;background-color: #dd5353;color: #fff;font-weight: 700;" value="返  回" onClick="javascript:history.go(-1);" />
+                </div>
+            </form>
+        </div>
+
+
+        <div class="footer">
+            <p3>&nbsp&nbsp&nbspEmmmm  </p3>
+            <p3>&nbsp&nbsp&nbsp使用条款  </p3>
+            <p3>&nbsp&nbsp&nbsp帮助  </p3>
+        </div>
+    </div>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<%@ page language="java" import="java.util.*" pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="${base }">
+
+    <title>管理员管理</title>
+    <link href="${base }/css/list.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" language="javascript">
+        function add()
+        {
+            window.open("../pms/pages/users/addusers.jsp","addStu", "resizable=false,top=150," +"left=450,width=400,height=430,toolbar=no,menubar=no,scrollbars=no");
+        }
+        function   popwin(url)
+        {
+            window.open(url,"","resizable=false,top=150," +"left=450,width=400,height=430,toolbar=no,menubar=no,scrollbars=no");
+        }
+
+    </script>
+    <style type="text/css">
+        a{text-decoration: none}
+        a:link{color:#1e88e5;}
+        a:visited{color:#1e88e5;}
+        a:hover{color:red;}
+        a:active{color:#ccc;}
+
+        .tops{
+            margin-left: 30px;
+            height: 84px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: #666 0px 0px 2px;
+        }
+        .main{
+            margin-top: 20px;
+            margin-left: 30px;
+            width: 95%;
+            height: 80%;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+        }
+        h3{
+            color: #1e88e5;
+            line-height: 10px;
+            font-size: 21px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+        }
+        h2{
+            font-family: "Poppins", sans-serif;
+            color: #a6b7bf;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        pt3{
+            font-family: "Poppins", sans-serif;
+            color: #a6b7bf;
+            font-size: 11px;
+            font-weight: 400;
+        }
+        .word{
+            margin-left: 30px;
+            float: left;
+        }
+        .searchl1{
+            float:right;
+            width: 310px;
+            height: 79px;
+            background-image: url("${base}/images/search.png");
+        }
+        .bot{
+            background:#2f435e;
+            color:#f2f2f2;
+            padding: 6px 15px 6px 15px;
+            font-size:14px;
+            font-family: 微软雅黑,宋体,Arial,Helvetica,Verdana,sans-serif;
+            font-weight:bold;
+            border:none;
+            transition:all linear 0.30s;
+            border-radius: .25rem;
+        }
+        .botton{
+            padding-top: 10px;
+            padding-right: 20px;
+            float: right;
+        }
+
+
+    </style>
+</head>
+
+<body bgcolor="#eef5f9">
+
+<div class="tops">
+    <div class="word">
+    <h3 class="pt1">当前位置</h3>
+        <h2 class="pt3"><a href="${base }/pages/sy.jsp">管理员后台</a>>管理员账号管理</h2>
+    </div>
+
+
+
+</div>
+<div class="main">
+<form action="${base }/servlet/UsersServlet?method=findAllUsers" method="post">
+
+        <div class="searchl1">
+                    <input name="uname" id="uname" value="${ users.uname}" style="margin-left: 50px;margin-top: 22px;width: 180px;height: 30px;outline:none;background:none;outline:none;border:0px;">
+                    <input type="submit" value="" style="margin-left: 5px;margin-top: 20px;width: 39px;height: 27px;	background:none;outline:none;border:0px;">
+        </div>
+
+
+    <div align="center" id="studentlist">
+        <table border="1"  >
+            <tr>
+                <th align="center">
+                    序号
+                </th>
+                <th>
+                    用户
+                </th>
+                <th>
+                    姓名
+                </th>
+                <th>
+                    密码
+                </th>
+                <th>
+                    联系电话
+                </th>
+                <th>
+                    邮箱
+                </th>
+                <th>
+                    操作
+                </th>
+
+            </tr>
+            <c:forEach var="item" varStatus="i" items="${list}">
+
+                <tr>
+                    <td>
+                        ${(pagenum-1)*currentp+i.index+1}
+                    </td>
+                    <td width="100px;">
+                        ${item.uname}
+                    </td>
+                    <td width="100px;">
+                        ${item.urealname}
+                    </td>
+                    <td>
+                        ${item.upassword}
+                    </td>
+                    <td>
+                        ${item.utel}
+                    </td>
+                    <td>
+                        ${item.umail}
+                    </td>
+
+                    <td align="center" width="100px;">
+                        <a href="javascript:popwin('${base }/servlet/UsersServlet?method=updatePage&uid=${item.uid}')">修改</a>
+                        <a href="${base }/servlet/UsersServlet?method=deleteUsers&uid=${item.uid}">删除</a>
+                    </td>
+
+                </tr>
+            </c:forEach>
+        </table>
+        ${pagingModel.pageLink }${pagingModel.pageInfo }
+    </div>
+
+    <div class="botton">
+        <input class="bot" type="button" onclick="add()" value="添  加"}>
+        <input class="bot" type="button" value="返  回" onClick="javascript:history.go(-1);" />
+    </div>
+
+</form>
+</div>
+</body>
+</html>

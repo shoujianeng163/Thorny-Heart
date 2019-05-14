@@ -1,0 +1,186 @@
+<%@ page language="java" pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="${base}">
+
+    <title>图片管理</title>
+    <style type="">
+        a{text-decoration: none}
+        a:link{color:#1e88e5;}
+        a:visited{color:#1e88e5;}
+        a:hover{color:red;}
+        a:active{color:#ccc;}
+        .table14_9 table {
+            width:100%;
+            margin:0;
+            border:0;
+        }
+        .table14_9 th {
+            font-weight:bold;
+            background-color:#cdeafe;
+            color:#2071fe
+        }
+        .table14_9,.table14_9 th,.table14_9 td {
+            font-size:0.95em;
+            text-align:center;
+            border-collapse:collapse;
+        }
+        .table14_9 th,.table14_9 td {
+            border: 1px solid #ffffff;
+            border-width:1px
+        }
+        .table14_9 th {
+            border: 1px solid #cdeafe;
+            border-width:1px 0 1px 0
+        }
+        .table14_9 td {
+            border: 1px solid #eeeeee;
+            border-width:1px 0 1px 0
+        }
+        .table14_9 tr {
+            border: 1px solid #ffffff;
+        }
+        .table14_9 tr:nth-child(odd){
+            background-color:#f7f7f7;
+        }
+        .table14_9 tr:nth-child(even){
+            background-color:#ffffff;
+        }
+        .banner{
+            width: 100%;
+            height: 500px;
+            background: url("${base}/images/banner1.jpg");
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="banner">
+
+
+</div>
+<form action="${base }/servlet/PictureServlet?method=findMyPicture" method="post">
+
+
+
+    <table class=table14_9 width="100%">
+        <tr>
+            <td align="center">
+                <input type="hidden" id="flag" name="flag" value="${flag}">
+                <table >
+                    <tr>
+                        <td >
+                            <div align="center" >
+                                <table class=table14_9>
+                                    <tr>
+                                        <th class="th" align="left">
+                                            名称：
+                                            <input id="pname" name="pname" value="${picture.pname }">
+                                            图片类型：
+                                            <select id="ptid" name="ptid">
+                                                <option value="">
+                                                    --请选择--
+                                                </option>
+                                                <c:forEach var="item" items="${ptypelist}">
+                                                    <option value="${item.ptid }">
+                                                        ${item.ptname }
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                            <script type="text/javascript">document.getElementById("ptid").value='${picture.ptid}';</script>
+                                            <input type="submit" value="搜  索" />
+                                        </th>
+
+                                        <th >
+                                            <input type="button" onclick="location.href='${base }/servlet/PictureServlet?method=addPicture'" value="添  加" />
+                                            <input class="box" type="button" value="返  回" onClick="location.href='${base }/servlet/LoginServlet?method=showPage'" />
+                                        </th>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div align="center" >
+                                <table >
+                                    <tr>
+                                        <th align="center" >
+                                            序号
+                                        </th>
+                                        <th >
+                                            图片编号
+                                        </th>
+                                        <th >
+                                            图片名称
+                                        </th>
+                                        <th >
+                                            图片分类
+                                        </th>
+                                        <th >
+                                            图片介绍
+                                        </th>
+                                        <th >
+                                            发布时间
+                                        </th>
+                                        <th >
+                                            积分
+                                        </th>
+                                        <th >
+                                            审核状态
+                                        </th>
+                                        <th >
+                                            操作
+                                        </th>
+
+
+                                    </tr>
+                                    <c:forEach var="item" varStatus="i" items="${list}">
+                                        <tr>
+                                            <td >
+                                                ${(pagenum-1)*currentp+i.index+1}
+                                            </td>
+                                            <td >
+                                                ${item.pcode}
+                                            </td>
+                                            <td >
+                                                ${item.pname}
+                                            </td>
+                                            <td >
+                                                ${item.ptname}
+                                            </td>
+                                            <td >
+                                                ${item.pintro}
+                                            </td>
+                                            <td >
+                                                ${item.ptime}
+                                            </td>
+                                            <td >
+                                                ${item.pmark}
+                                            </td>
+                                            <td >
+                                                <c:if test="${item.pauditing==0 }">未审</c:if>
+                                                <c:if test="${item.pauditing==1 }">通过</c:if>
+                                                <c:if test="${item.pauditing==2 }">驳回</c:if>
+                                            </td>
+                                            <td >
+                                                <c:if test="${item.pauditing==0 }">
+                                                    <a href="${base }/servlet/PictureServlet?method=updatePage&pid=${item.pid}">修改</a>
+                                                    <a href="${base }/servlet/PictureServlet?method=deletePicture&pid=${item.pid}">删除</a>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+                                ${pagingModel.pageLink }${pagingModel.pageInfo }
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

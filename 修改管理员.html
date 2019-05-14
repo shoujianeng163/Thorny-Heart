@@ -1,0 +1,206 @@
+<%@ page language="java" import="java.util.*" pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="<%=basePath%>">
+
+    <title>修改用户</title>
+    <link href="<%=basePath%>/css/page.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .dark-matter {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 500px;
+            background: #555;
+            padding: 20px 30px 20px 30px;
+            font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #D3D3D3;
+            text-shadow: 1px 1px 1px #444;
+            border: none;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+        .dark-matter h1 {
+            padding: 0px 0px 10px 40px;
+            display: block;
+            border-bottom: 1px solid #444;
+            margin: -10px -30px 30px -30px;
+        }
+        .dark-matter h1>span {
+            display: block;
+            font-size: 11px;
+        }
+        .dark-matter label {
+            display: block;
+            margin: 0px 0px 5px;
+        }
+        .dark-matter label>span {
+            float: left;
+            width: 20%;
+            text-align: right;
+            padding-right: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .dark-matter input[type="text"], .dark-matter input[type="email"], .dark-matter textarea, .dark-matter select {
+            border: none;
+            color: #525252;
+            height: 25px;
+            line-height:15px;
+            margin-bottom: 16px;
+            margin-right: 6px;
+            margin-top: 2px;
+            outline: 0 none;
+            padding: 5px 0px 5px 5px;
+            width: 70%;
+            border-radius: 2px;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            background: #DFDFDF;
+        }
+        .dark-matter select {
+            appearance:none;
+            -webkit-appearance:none;
+            -moz-appearance: none;
+            text-indent: 0.01px;
+            text-overflow: '';
+            width: 70%;
+            height: 35px;
+            color: #525252;
+            line-height: 25px;
+        }
+        .dark-matter textarea{
+            height:100px;
+            padding: 5px 0px 0px 5px;
+            width: 70%;
+        }
+        .dark-matter .button {
+            background: #FFCC02;
+            border: none;
+            padding: 10px 25px 10px 25px;
+            color: #585858;
+            border-radius: 4px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            text-shadow: 1px 1px 1px #FFE477;
+            font-weight: bold;
+            box-shadow: 1px 1px 1px #3D3D3D;
+            -webkit-box-shadow:1px 1px 1px #3D3D3D;
+            -moz-box-shadow:1px 1px 1px #3D3D3D;
+        }
+        .dark-matter .button:hover {
+            color: #333;
+            background-color: #EBEBEB;
+        }
+    </style>
+    <script type="text/javascript" language="javascript">
+        var uname =[<c:forEach items="${list}" var="item" varStatus="i"><c:if test="${i.index!=0}">,</c:if>{'uid':'${item.uid}','uname':'${item.uname}'}</c:forEach>];
+        function checkForm(){
+            var form = document.forms[0];
+            if(form.uname.value=="" || form.uname.value.length<=0){
+                alert("请输入用户名！");
+                form.uname.focus();
+                return false;
+            }
+            checkname();
+            if(flag==1)
+            {
+                alert("用户名已存在！");
+                form.uname.focus();
+                return false;
+            }
+            if(form.urealname.value=="" || form.urealname.value.length<=0){
+                alert("请输入用户名！");
+                form.urealname.focus();
+                return false;
+            }
+            if(form.upassword.value=="" || form.upassword.value.length<=0){
+                alert("请输入密码！");
+                form.upassword.focus();
+                return false;
+            }
+            if(form.utel.value=="" || form.utel.value.length<=0){
+                alert("请输入联系电话！");
+                form.utel.focus();
+                return false;
+            }
+            if(form.umail.value=="" || form.umail.value.length<=0){
+                alert("请输入邮箱！");
+                form.umail.focus();
+                return false;
+            }
+            return true;
+        }
+        function checkname()
+        {
+            var form = document.forms[0];
+            var i ;
+            for(i=0;i<uname.length;i++)
+            {
+                if(uname[i].uname==form.uname.value&&form.uid.value!=uname[i].uid)
+                {
+                    alert("用户名已存在！");
+                    form.uname.focus();
+                    flag=1;
+                    return false;
+                }
+                else
+                {
+                    flag=0;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body >
+
+    <form action="${base }/servlet/UsersServlet?method=updateUsers" method="post" onsubmit="return checkForm()" class="dark-matter">
+
+        <h1>添加管理员
+            <span>请确认您已经经过允许才能进行本次操作哦</span>
+        </h1>
+
+        <label>
+            <span>用户名 :</span>
+            <input type="text" id="uname" name="uname" onblur="checkname()" value="${users.uname }">
+            <input id="uid" name="uid" value="${users.uid }" type="hidden">
+        </label>
+
+        <label>
+            <span>姓名 :</span>
+            <input id="urealname" type="text" name="urealname" value="${users.urealname }">
+        </label>
+
+        <label>
+            <span>密码 :</span>
+            <input id="upassword" type="text" name="upassword" value="${users.upassword }">
+        </label>
+        <label></label>
+        <label>
+            <span>电话 :</span>
+            <input id="utel" type="text" name="utel" value="${users.utel }">
+        </label>
+
+        <label>
+            <span>邮箱 :</span>
+            <input id="umail" type="text" name="umail" value="${users.umail }">
+        </label>
+
+        <label>
+            <span>&nbsp;</span>
+            <input type="submit" class="button" value="提交" >
+            <input type="button" class="button" value="返回" onClick="javascript:history.go(-1);">
+        </label>
+    </form>
+
+</body>
+</html>

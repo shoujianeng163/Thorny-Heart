@@ -1,0 +1,128 @@
+<%@ page language="java"  pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="${base}">
+
+    <title>图片管理</title>
+    <link href="${base}/css/list.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        a{text-decoration: none}
+        a:link{color:#1e88e5;}
+        a:visited{color:#1e88e5;}
+        a:hover{color:red;}
+        a:active{color:#ccc;}
+
+        .tops{
+            margin-left: 30px;
+            height: 84px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: #666 0px 0px 2px;
+        }
+        h3{
+            color: #1e88e5;
+            line-height: 10px;
+            font-size: 21px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+        }
+        h2{
+            font-family: "Poppins", sans-serif;
+            color: #a6b7bf;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        pt3{
+            font-family: "Poppins", sans-serif;
+            color: #a6b7bf;
+            font-size: 11px;
+            font-weight: 400;
+        }
+        .word{
+            margin-left: 30px;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+<form action="${base }/servlet/PictureServlet?method=findAllPicture" method="post">
+    <div class="tops">
+
+        <div class="word">
+            <h3 class="pt1">当前位置</h3>
+            <h2 class="pt3"><a href="${base }/pages/sy.jsp">管理员后台</a>>图片信息统计</h2>
+        </div>
+    </div>
+
+
+    <div align="center" id="studentlist">
+        <table border="1">
+            <tr>
+                <th align="center">
+                    序号
+                </th>
+
+                <th>
+                    图片分类
+                </th>
+                <th>
+                    图片张数
+                </th>
+                <th>
+                    累计积分
+                </th>
+
+
+
+            </tr>
+            <c:set value="${0 }" var="total"></c:set>
+            <c:set value="${0 }" var="count"></c:set>
+            <c:forEach var="item" varStatus="i" items="${list}">
+
+                <tr>
+                    <td>
+                        ${(pagenum-1)*currentp+i.index+1}
+                    </td>
+
+                    <td>
+                        ${item.ptname}
+                    </td>
+                    <td>
+                        ${item.eid}
+                        <c:set value="${count+item.eid }" var="count"></c:set>
+                    </td>
+                    <td>
+                        ${item.pmark}
+                        <c:set value="${total+item.pmark }" var="total"></c:set>
+                    </td>
+
+
+                </tr>
+            </c:forEach>
+            <tr>
+                <td>
+
+                </td>
+
+                <td>
+                    <div style="font-weight: bold;">总计</div>
+                </td>
+                <td>
+                    <div style="font-weight: bold;">${count}</div>
+                </td>
+                <td>
+                    <div style="font-weight: bold;">${total}</div>
+                </td>
+
+
+            </tr>
+        </table>
+        ${pagingModel.pageLink }${pagingModel.pageInfo }
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title>登录</title>
+</head>
+
+<script type="text/javascript">
+    function  check()
+    {
+
+
+        var username=$("#username").val();
+        var pwd=$("#pwd").val();
+
+        $.ajax({
+            type:"post",
+            url:"/10/teacher/check",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            data:"username="+username+"&pwd="+pwd,
+            success:function(data){
+
+
+                if(data==0)
+                    alert("账号不存在")
+                else if (data==1)
+                    alert("密码错误")
+
+                else
+                    window.location.href="http://localhost:8080/10/course/load";
+            },
+
+
+            error:function(){
+
+            }
+        });
+
+    }
+
+
+</script>
+<style>
+    .main{
+        width: 900px;
+        background:url("imgs/bg2change.jpg");
+        height: 450px;
+        margin: auto;
+        position: absolute;
+        border-radius:0px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        -webkit-box-shadow: #666 0px 0px 10px;
+        -moz-box-shadow: #666 0px 0px 10px;
+        box-shadow: #666 0px 0px 10px;
+
+    }
+    .p1{
+        color: #ffffff;
+        font-family: 微软雅黑;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .p3{
+        padding-top: 10px;
+        display: inline-block;
+        color: hsla(0,0%,100%,.5);
+    }
+    .logo{
+        float: left;
+        margin-top: 30px;
+        margin-left: 315px;
+
+    }
+
+    .login{
+        width: 544px;
+        background: white;
+        height: 550px;
+        filter:alpha(opacity:30);
+        opacity:1;
+        float: right;
+    }
+    .form-group{
+        width: 80px;
+        height: 50px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 300px;
+        bottom: 140px;
+    }
+    .w1{
+        margin-top: 90px;
+        margin-left: 315px;
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 20px;
+        background-color: #464a4d;
+        text-align: left;
+        color: hsla(0,0%,100%,.5);
+        font-size: 12px;
+    }
+    .head{
+        float: left;
+    }
+    .bg{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background:url("imgs/bg2.jpg ");
+        -webkit-filter: blur(3px);
+        -moz-filter: blur(3px);
+        -o-filter: blur(3px);
+        -ms-filter: blur(3px);
+        filter: blur(3px);
+    }
+
+
+
+</style>
+
+<body>
+<div class="bg">
+
+</div>
+
+    <div class="main">
+        <div class="logo">
+            <img src="imgs/logo2.png" >
+        </div>
+        <div class="w1">
+            <p class="p1">欢迎来到Emmm管理后台</p>
+        </div>
+
+        <form role="form">
+            <div class="form-group">
+                <p style="color: #ffffff;margin-left: 30px">账号</p>
+                <input name="userName" type="text" id="userName" value="admin" class="form-control" placeholder="Account" style=" margin-left: 31px;margin-top: 5px;margin-bottom:10px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                <p style="color: #ffffff;margin-left: 30px">密码</p>
+                <input name="password" type="password" id="password" value="admin" class="form-control" placeholder="password" style="margin-left: 31px; margin-top: 5px;BORDER-BOTTOM-STYLE: solid;height:40px;width: 300px;color: #cccccc">
+                <button type="button" class="btn btn-primary form-control" onclick="check()" style="margin-left: 31px;margin-top:20px;border-style: none;height:40px;width: 300px;font-family: inherit;background-color: #25c6ff;color: #fff;font-weight: 700;">继续</button>
+                <button type="button" class="btn btn-primary form-control" onclick="check()" style="margin-left: 31px;margin-top:10px;border-style: none;height:40px;width: 300px;font-family: inherit;background-color: #4cc27e;color: #fff;font-weight: 700;">返回</button>
+            </div>
+        </form>
+</div>
+
+    <div class="footer">
+        <p3>&nbsp&nbsp&nbsp©Emmmm  </p3>
+        <p3>&nbsp&nbsp&nbsp使用条款  </p3>
+        <p3>&nbsp&nbsp&nbsp帮助  </p3>
+    </div>
+
+</body>
+</html>

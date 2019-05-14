@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tomcat监控系统</title>
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />    <!-- /.字体 -->
+
+    <script src="assets/js/jquery-3.3.1.js"></script>
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/jquery.metisMenu.js"></script>    <!-- /.JQUERY -->
+
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />  <!-- /.bootstrap框架 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+
+
+
+
+    <!-- Bootstrap框架-->
+    <style type="text/css">
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #32C2CD url(assets/img/bg-img.jpg) !important;
+        }
+        .black_overlay{
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index:1001;
+            -moz-opacity: 0.8;
+            opacity:.80;
+            filter: alpha(opacity=88);
+        }
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 55%;
+            height: 55%;
+            padding: 20px;
+            border: 10px solid orange;
+            background-color: white;
+            z-index:1002;
+            overflow: auto;
+        }
+        #wrapper {
+            width: 100%;
+        }
+        #page-wrapper {
+            padding: 15px 15px;
+            min-height: 600px;
+            background: #E6E6E6;
+        }
+        #page-inner {
+            width:100%;
+            margin:10px 20px 10px 0px;
+            background-color:transparent;
+            padding:10px;
+            min-height:1200px;
+        }
+        .text-center {
+            text-align:center;
+        }
+        h1, .h1, h2, .h2, h3, .h3 {
+            margin-top: 7px;
+            margin-bottom: -5px;
+        }
+        h2 {
+            color: #000;
+        }
+        h4 {
+            padding-top:10px;
+        }
+        p {
+            font-size:16px;
+            line-height:25px;
+            padding-top:20px;
+        }
+        .navbar-side {
+            z-index: 0;
+        }
+        .navbar-side .nav > li > a > i{
+            padding: 8px;
+            width: 30px;
+            text-align: center;
+        }
+        .top-navbar{
+            position: fixed;
+            width: 100%;
+            z-index: 300;
+            -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+        }
+        .navbar-side {
+            z-index: 1;
+            position: fixed;
+            width: 260px;
+            top: 80px;
+        }
+        #page-wrapper {
+            position: relative;
+            top: 55px;
+        }
+        .top-navbar .nav > li > a:hover, .top-navbar .nav > li > a:focus {
+            text-decoration: none;
+            background-color: #2497BA;
+            color: #fff;
+        }
+        .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+            background-color: #23C1CD;
+            border-color: #24C2CD;
+        }
+        .text-muted {
+            color: #FB5651;
+        }
+        .page-header {
+            padding-bottom: 9px;
+            margin: 10px 0 20px;
+            border-bottom: 1px solid transparent;
+            text-align: left;
+        }
+        .panel-default {
+            border-color: #ECECEC;
+        }
+        .panel-default > .panel-heading {
+            color: #000;
+            border-color: #FFF;
+            font-weight:bold;
+            background: #FFFFFF;
+            font-size: 16px;
+            padding: 15px 15px 0;}
+        .panel-heading {
+            /* padding: 15px 15px 0px; */
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+        .back-dash p {
+            padding-top:16px;
+            font-size:13px;
+            color:#fff;
+            line-height:25px;
+            text-align:justify;
+        }
+        .placeholder h2 {
+            margin-bottom: 0px;
+        }
+        .chat-box li {
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted #808080;
+        }
+        .chat-box li .chat-body p {
+            margin: 0;
+            color: #8d8888;
+        }
+        .chat-img>img {
+            margin-left:20px;
+        }
+        footer p{
+            font-size: 14px;
+        }
+        /*菜单样式*/
+        .top-navbar{
+            margin:0px;
+        }
+        .top-navbar .navbar-brand {
+            color: #fff;
+            width: 260px;
+            text-align: left;
+            height: 60px;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 30px;
+            background: #24383A;
+        }
+        .navbar-brand b{
+            color: #4BD28C;
+        }
+        .top-navbar .nav > li {
+            position: relative;
+            display: inline-block;
+            margin: 0px;
+            padding: 0px;
+        }
+        .top-navbar .nav > li > a {
+            position: relative;
+            display: block;
+            padding: 20px;
+            color: #FFFFFF;
+            margin: 0px;
+        }
+        .top-navbar .nav > li > a:hover, .top-navbar .nav > li > a:focus {
+            text-decoration: none;
+            color: #319DB5 !important;
+            background: transparent;
+        }
+        .top-navbar .dropdown-menu{
+            min-width: 230px;
+            border-radius: 0 0 4px 4px;
+        }
+        .top-navbar .dropdown-menu > li > a:hover, .top-navbar .dropdown-menu > li > a:focus{
+            color: #225081;
+            background:none;
+        }
+        .dropdown-tasks{
+            width: 255px;
+        }
+        .dropdown-tasks .progress {
+            height: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            border-radius: 0px;
+        }
+        .dropdown-tasks > li > a {
+            padding: 0px 15px;
+        }
+        .dropdown-tasks p {
+            font-size: 13px;
+            line-height: 21px;
+            padding-top: 4px;
+        }
+        .active-menu {
+            background-color: #18A0A9 !important;
+            color: #fff !important;
+        }
+        .active-menu i{
+            color: #fff !important;
+        }
+        .arrow {
+            float: right;
+            margin-top: 8px;
+        }
+
+        .fa.arrow:before {
+            content: "\f104";
+        }
+
+        .active > a > .fa.arrow:before {
+            content: "\f107";
+        }
+
+
+        .nav-second-level li,
+        .nav-third-level li {
+            border-bottom: none !important;
+        }
+
+        .nav-second-level li a {
+            padding-left: 37px;
+        }
+
+        .nav-third-level li a {
+            padding-left: 55px;
+        }
+        .sidebar-collapse , .sidebar-collapse .nav{
+            background:none;
+        }
+        .sidebar-collapse .nav {
+            padding:0;
+        }
+        .sidebar-collapse .nav > li > a {
+            color: #FFFFFF;
+            background:transparent;
+            text-shadow:none;
+        }
+        .sidebar-collapse > .nav > li > a {
+            padding: 12px 10px;
+        }
+        .sidebar-collapse > .nav > li {
+            border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+        }
+
+        .sidebar-collapse .nav > li > a:hover,
+        .sidebar-collapse .nav > li > a:focus {
+
+            outline:0;
+        }
+        .navbar-side {
+            border:none;
+            background: url(assets/img/bg-img.jpg);
+        }
+        .top-navbar {
+            background: #4A4A4A;
+            border-bottom:none;
+        }
+        .top-navbar .nav > li > a > i {
+            margin-right: 2px;
+        }
+        .top-navbar .navbar-brand:hover {
+            color: #1CC09F;
+            background-color: rgb(43, 46, 51);
+        }
+        .dropdown-user li {
+            margin: 8px 0;
+        }
+        .navbar-default {
+            border:0px solid black;
+
+        }
+        .navbar-header {
+            background: transparent;
+        }
+        .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+            background-color: #283643;
+        }
+        .navbar-default .navbar-toggle {
+            border-color: #fff;
+        }
+
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: #FFF;
+        }
+        .nav > li > a > i {
+            margin-right:10px;
+            color: #FFF;
+        }
+        .dropdown-menu>li>a>strong {
+            color: #1CC09F;
+            padding: 5px 0;
+            display: inline-block;
+            font-weight: 500;
+        }
+        ul.dropdown-menu.dropdown-messages li a div {
+            padding: 2px 0;
+        }
+        /*媒介查询（不用管）*/
+        @media(min-width:768px) {
+            #page-wrapper{
+                margin: 0 0 0 260px;
+                padding: 15px 30px;
+                min-height: 1200px;
+            }
+            .navbar-side {
+                width: 260px;
+                z-index: 1;
+            }
+            .navbar {
+                border-radius: 0px;
+            }
+        }
+        @media(max-width:480px) {
+            .page-header small {
+                display: block;
+                padding-top: 14px;
+                font-size: 19px;
+            }
+        }
+    </style>
+
+
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+
+
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li style="height: 85px">
+                        <a href="#">
+                            <div>
+                                <strong><div class="error1"></div></strong>
+                                <span class="pull-right text-muted">
+                                    </span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="text-center" >
+                            <strong><button type="button" class="btn btn-default" style="border: none;color: teal" onclick="readlog()" >我知道了</button></strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- /.消息提醒（暂定） -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-tasks">
+                    <li>
+                        <a href="#">
+                            <div class="config" >
+
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="text-center" href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">
+                            <strong>修改配置</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- /.事务进程（暂定） -->
+
+        </ul>
+    </nav>
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse" style="height:650px;width:auto;overflow-y:auto;overflow-x: hidden">
+            <ul class="nav" id="main-menu" style="overflow-y:auto;overflow-x: hidden">
+
+                <table  id="tb" style="height:810px;padding-top: 10px;width: 50px">
+
+                </table>
+
+            </ul>
+        </div>
+
+    </nav>
+    <div id="page-wrapper" >
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">
+                        <div class="ipadd" style="width: 37%;float: left"></div> <small><div class="portt"></div></small>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            内存占用
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-area-chart"style="width: 550px;height: 420px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            线程使用情况
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-donut-chart"style="width: 550px;height: 210px; margin: 0 auto"></div>
+                            <div id="morris-donut-chart1"style="width: 550px;height: 210px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="memory_pool" style="height: 280px">
+                <div style="width: 100%;height: 40px;background-color:#d4e3e5;padding-top: 6px;font-size: 20px;color: darkslategrey;border: 1px solid #a9c6c9;">
+                    <div style="margin-top: 0">
+                        <span style="float: left;width: 16.6%;text-align: center;">Name</span>
+                        <span  style="float: left;width: 16.6%;text-align: center;">Type</span>
+                        <span  style="float: left;width: 16.6%;text-align: center;">Initial</span>
+                        <span  style="float: left;width: 16.6%;text-align: center;">Committed</span>
+                        <span style="float: left;width: 16.6%;text-align: center;">Maximum</span>
+                        <span  style="float: left;width: 16.6%;text-align: center;">Used</span>
+                    </div>
+                </div>
+                <div class="table" style="background: white;">
+
+                </div>
+
+            </div>
+
+            <div class="memory_other" style="height: 280px">
+                <div style="width: 100%;height: 40px;background-color:#d4e3e5;padding-top: 6px;font-size: 20px;color: darkslategrey;border: 1px solid #a9c6c9;">
+                    <div style="margin-top: 0">
+                        <span style="float: left;width: 14.28%;text-align: center;">MaxTime</span>
+                        <span  style="float: left;width: 14.28%;text-align: center;">ProcessingTime</span>
+                        <span  style="float: left;width: 14.28%;text-align: center;">RequestCount</span>
+                        <span  style="float: left;width: 14.28%;text-align: center;">ErrorCount</span>
+                        <span style="float: left;width: 14.28%;text-align: center;">BytesReceived</span>
+                        <span  style="float: left;width: 14.28%;text-align: center;">BytesSent</span>
+                        <span  style="float: left;width: 14.28%;text-align: center;">Time</span>
+                    </div>
+                </div>
+                <div class="memory_table" style="background: white;">
+
+                </div>
+
+            </div>
+
+
+            <footer><p>我有一只小肥猪，猪油能力强  - Collect from <a href="http://www.baidu.com/" title="城院养猪场" target="_blank">城院养猪场</a></p></footer>
+        </div>
+    </div>
+</div>
+<div id="light" class="white_content " style="height: 500px">
+    <section id="examples">
+        <div><p style="font-size: 18px;color: darkred;padding: 0">memory_total</p><input type="range" id="a_id" min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">Compressed_Class_Space</p><input type="range" id="b_id" min="0" max="1"step="0.1" data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">currentThreadsCount</p><input type="range" id="c_id"min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">currentThreadsBusy</p><input type="range" id="d_id"min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">Code_Cache</p><input type="range" id="e_id"min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">Metaspace</p><input type="range" id="f_id"min="0" max="1" step="0.1" data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">Eden_Space</p><input type="range" id="g_id"min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">Old_Gen</p><input type="range"id="h_id" min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+        <div><p style="font-size: 18px;color: darkred;padding: 0">Survivor_Space</p><input type="range" id="i_id"min="0" max="1" step="0.1"data-rangeslider><output></output></div>
+    </section>
+    <button type="button" style="float: right" class="btn btn-default" onclick="update_config()" >保存</button>
+    <button style="float: right" href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'" type="button" class="btn btn-default" onclick="" >取消</button>
+</div>
+<div id="fade" class="black_overlay"></div>
+</body>
+</html>

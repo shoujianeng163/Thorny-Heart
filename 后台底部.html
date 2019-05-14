@@ -1,0 +1,52 @@
+
+<%@ page language="java"  pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<html>
+<head>
+
+
+    <title></title>
+    <style type="text/css">
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+        .STYLE1 {
+            padding-top: 2px;
+            padding-left: 3px;
+            color: hsla(0,0%,100%,.5);
+            font-size: 12px;
+        }
+        .foot{
+            height: 100%;
+            background-color: #464a4d;
+        }
+    </style>
+
+</head>
+
+<body >
+<div class="foot">
+<c:set var="type" value="<%=session.getAttribute("type") %>"></c:set>
+    <tr>
+            <tr>
+                <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="814" class="STYLE1">欢迎您！亲爱的<%=session.getAttribute("username") %>&nbsp;&nbsp;您当前的身份是:<c:if test="${type==1 }">管理员</c:if><c:if test="${type==2 }">普通员工</c:if></td>
+                        <td width="185" nowrap="nowrap" class="STYLE1"><div align="center">&nbsp;<br></div></td>
+                    </tr>
+                </table></td>
+            </tr>
+        </table>
+    </tr>
+</table>
+</div>
+</body>
+</html>
+

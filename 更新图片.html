@@ -1,0 +1,284 @@
+<%@ page language="java" import="java.util.*" pageEncoding="gb2312"%>
+<%@ include file="/pages/taglibs.jsp"%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <base href="${base}">
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+    <link href="${base}/css/bootstrap.css" rel="stylesheet" >
+    <script src="${base}/js/jquery-3.3.1.min.js"></script>
+    <script src="${base}/js/bootstrap.min.js"></script>
+    <title>修改图片信息</title>
+    <script src="${base}/scripts/meizzDate.js"></script>
+    <style type="">
+        .basic-grey {
+            margin-left:auto;
+            margin-right:auto;
+            max-width: 500px;
+            background: #F7F7F7;
+            padding: 25px 15px 25px 10px;
+            font: 12px Georgia, "Times New Roman", Times, serif;
+            color: #888;
+            text-shadow: 1px 1px 1px #FFF;
+            border:1px solid #E4E4E4;
+        }
+        .basic-grey h1 {
+            font-size: 25px;
+            padding: 0px 0px 10px 40px;
+            display: block;
+            border-bottom:1px solid #E4E4E4;
+            margin: -10px -15px 30px -10px;;
+            color: #888;
+        }
+        .basic-grey h1>span {
+            display: block;
+            font-size: 11px;
+        }
+        .basic-grey label {
+            display: block;
+            margin: 0px;
+        }
+        .basic-grey label>span {
+            float: left;
+            width: 20%;
+            text-align: right;
+            padding-right: 10px;
+            margin-top: 10px;
+            color: #888;
+        }
+        .basic-grey input[type="text"], .basic-grey input[type="email"], .basic-grey textarea, .basic-grey select {
+            border: 1px solid #DADADA;
+            color: #888;
+            height: 30px;
+            margin-bottom: 16px;
+            margin-right: 6px;
+            margin-top: 2px;
+            outline: 0 none;
+            padding: 3px 3px 3px 5px;
+            width: 70%;
+            font-size: 12px;
+            line-height:15px;
+            box-shadow: inset 0px 1px 4px #ECECEC;
+            -moz-box-shadow: inset 0px 1px 4px #ECECEC;
+            -webkit-box-shadow: inset 0px 1px 4px# ECECEC;
+        }
+        .basic-grey textarea{
+            padding: 5px 3px 3px 5px;
+        }
+        .basic-grey select {
+            appearance:none;
+            -webkit-appearance:none;
+            -moz-appearance: none;
+            text-indent: 0.01px;
+            text-overflow: '';
+            width: 70%;
+            height: 35px;
+            line-height: 25px;
+        }
+        .basic-grey textarea{
+            height:100px;
+        }
+        .basic-grey .button {
+            background: #E27575;
+            border: none;
+            padding: 10px 25px 10px 25px;
+            color: #FFF;
+            box-shadow: 1px 1px 5px #B6B6B6;
+            border-radius: 3px;
+            text-shadow: 1px 1px 1px #9E3F3F;
+            cursor: pointer;
+        }
+        .basic-grey .button:hover {
+            background: #CF7A7A
+        }
+
+        .top-navbar{
+            background:url(${base}/images/logo3.png);
+            position: fixed;
+            width: 100%;
+            z-index: 300;
+            -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+        }
+        .top-navbar .nav > li > a:hover, .top-navbar .nav > li > a:focus {
+            text-decoration: none;
+            background-color: #2497BA;
+            color: #fff;
+        }
+        .navbar-brand b{
+            color: #4BD28C;
+        }
+        .top-navbar .nav > li {
+            position: relative;
+            display: inline-block;
+            margin: 0 30px;
+            padding: 0px;
+            color: #ffffff;
+
+        }
+        .top-navbar .nav > li > a {
+            position: relative;
+            display: block;
+            padding: 20px;
+            color: #FFFFFF;
+            margin: 0px;
+        }
+
+        .top-navbar .dropdown-menu{
+            min-width: 230px;
+            border-radius: 0 0 4px 4px;
+        }
+        .top-navbar .dropdown-menu > li > a:hover, .top-navbar .dropdown-menu > li > a:focus{
+            color: #225081;
+        }
+        .dropdown-tasks{
+            width: 115px;
+        }
+
+        .dropdown-tasks > li > a {
+            padding: 0px 15px;
+        }
+        .dropdown-tasks p {
+            font-size: 13px;
+            line-height: 21px;
+            padding-top: 4px;
+        }
+
+        .top-navbar .nav > li > a > i {
+            margin-right: 2px;
+        }
+        .dropdown-menu>li>a>strong {
+            color: #1CC09F;
+            padding: 5px 0;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .ll{
+            padding-top: 180px;
+            width: 650px;
+            float: right;
+        }
+        .rr{
+            padding-top: 80px;
+            padding-left: 50px;
+            width: 850px;
+            height: 800px;
+            overflow: hidden;
+            float: left;
+        }
+    </style>
+    <script type="text/javascript" language="javascript">
+        function checkForm(){
+            var form = document.forms[0];
+            if(form.ptid.value=="" || form.ptid.value.length<=0){
+                alert("请选择图片类型！");
+                form.ptid.focus();
+                return false;
+            }
+            if(form.pcode.value=="" || form.pcode.value.length<=0){
+                alert("图片编号不能为空！");
+                form.pcode.focus();
+                return false;
+            }
+            if(form.pintro.value=="" || form.pintro.value.length<=0){
+                alert("图片介绍不能为空！");
+                form.lbonus.focus();
+                return false;
+            }
+
+            if(form.purl.value=="" || form.purl.value.length<=0){
+                alert("请选择上传的图片！");
+                form.purl.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        function add_upload()
+        {
+            window.open("../pms/pages/upload.jsp","addStu",
+                "resizable=false,top=250," +"left=450,width=400,height=450,toolbar=no,menubar=no,scrollbars=no");
+        }
+    </script>
+</head>
+
+<body>
+<div class="head">
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <%=session.getAttribute("userrealname")%>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-tasks">
+                    <li>
+                        <a class="text-center" href="${base }/servlet/EmployeeServlet?method=updatePage&eid=<%=session.getAttribute("eid")%>">
+                        <strong>修改个人信息</strong>
+                        </a>
+                        <a class="text-center" href="${base }/pages/wlc.jsp">
+                            <strong>注销登录</strong>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="ll">
+<form action="${base }/servlet/PictureServlet?method=updatePicture" method="post" onsubmit="return checkForm()" class="basic-grey">
+    <label>
+        <span>图片类型：</span>
+        <select id="ptid" name="ptid">
+            <option value="">
+                --请选择--
+            </option>
+            <c:forEach var="item" items="${ptypelist}">
+                <option value="${item.ptid }">
+                    ${item.ptname }
+                </option>
+            </c:forEach>
+        </select>
+        <script type="text/javascript">document.getElementById("ptid").value='${picture.ptid}';</script>
+    </label>
+
+    <label>
+        <span>图片编号：</span>
+        <input id="pcode" name="pcode" type="text" value="${ picture.pcode}">
+        <input type="hidden" id="pid" name="pid" value="${ picture.pid}">
+    </label>
+    <label>
+        <span>图片名称:</span>
+        <input type="text" id="pname" name="pname" value="${ picture.pname}">
+    </label>
+
+    <label>
+        <span>图片介绍: </span>
+        <textarea id="pintro" name="pintro" placeholder="Your Message to Us">${ picture.pintro}</textarea>
+    </label>
+    <label>
+        <span>图片:</span>
+        <input type="text" readonly="readonly" name="purl" id="purl" value="${picture.purl}" />
+        <input type="button" class="button" value="上传图片" onclick="add_upload()">
+        <input type="submit" class="button" value="提交" >
+        <input type="button" class="button" value="返回" onClick="javascript:history.go(-1);">
+    </label>
+    <label>
+
+
+    </label>
+
+
+</form>
+</div>
+<div class="rr">
+    <h1 style="font-size: 25px">待更新的图片：</h1>
+    <img src="${base }${picture.purl}" width="800px" height="500px">
+</div>
+</body>
+</html>

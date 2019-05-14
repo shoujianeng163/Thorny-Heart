@@ -1,0 +1,216 @@
+<%@ page language="java"  pageEncoding="gb2312"%>
+<%String path = request.getContextPath();String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";%>
+<%@ include file="/pages/taglibs.jsp"%>
+
+<html>
+<head>
+    <base href="<%=basePath%>">
+    <title>Welcome</title>
+    <script src="${base}/js/jquery-3.3.1.min.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="${base}/js/echarts.js"></script>
+
+    <script>
+        $(function () {
+            Highcharts.setOptions({
+                credits:{
+                    enabled:false
+                }
+            });
+
+            function activeLastPointToolip(chart) {
+                var points = chart.series[0].points;
+                chart.tooltip.refresh(points[points.length -1]);
+            }
+
+
+            $('#morris-area-chart').highcharts({
+                chart: {
+                    type: 'line',
+                    marginRight: 10,
+                    events: {
+                        load: function () {
+                            var series1 = this.series[0],
+                                series2 = this.series[1]
+                            chart = this;
+                            activeLastPointToolip(chart);
+                            setInterval(function () {
+                                var x = (new Date()).getTime(), // 当前时间
+                                    y = Math.floor(Math.random()*1000)       // 随机值
+                                    t = Math.floor(Math.random()*2000-500)
+                                series1.addPoint([x, y], true, true);
+                                series2.addPoint([x, t], true, true);
+                                activeLastPointToolip(chart);
+                            }, 1000);
+                        }
+                    }
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: '单位（人）'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true          // 开启数据标签
+                        },
+                        enableMouseTracking: false // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.series.name + '</b><br/>' +
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                            Highcharts.numberFormat(this.y, 2);
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    name: '访问人数',
+                    data: (function () {
+                        // 生成随机值
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+                        for (i = -9; i <= 0; i += 1) {
+                            data.push({
+                                x: time + i * 1000,
+                                y: Math.floor(Math.random()*3000)
+                            });
+                        }
+                        return data;
+                    }())
+                }, {
+                    name: '点击量',
+                    data: (function () {
+                        // 生成随机值
+                        var data = [],
+                            time = (new Date()).getTime(),
+                            i;
+                        for (i = -9; i <= 0; i += 1) {
+                            data.push({
+                                x: time + i * 1000,
+                                y: Math.floor(Math.random()*4000-500)
+                            });
+                        }
+                        return data;
+                    }())
+                }]
+            });         //折线图
+        });
+
+    </script>
+
+    <link href="${base}/js/morris-0.4.3.min.css" rel="stylesheet" />
+    <style>
+        .chart1{
+            width: 830px;
+            height:457px;
+            background-color: #ffffff;
+            float: left;
+            margin-top: 30px;
+            margin-left: 30px;
+        }
+
+        .chart2{
+            width: 350px;
+            height:487px;
+            background-color: #ffffff;
+            float: right;
+            margin-top: 30px;
+            margin-right: 20px;
+        }
+
+        a{text-decoration: none}
+        a:link{color:#1e88e5;}
+        a:visited{color:#1e88e5;}
+        a:hover{color:red;}
+        a:active{color:#ccc;}
+
+        .tops{
+            margin-left: 30px;
+            height: 84px;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            box-shadow: #666 0px 0px 2px;
+        }
+        h3{
+            color: #1e88e5;
+            line-height: 10px;
+            font-size: 21px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+        }
+        h4{
+            color: #455a64;
+            line-height: 10px;
+            font-size: 21px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+        }
+        h2{
+            font-family: "Poppins", sans-serif;
+            color: #a6b7bf;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .word{
+            margin-left: 30px;
+            float: left;
+        }
+
+        .w1{
+            margin-left: 30px;
+        }
+        .w2{
+
+        }
+    </style>
+
+
+</head>
+
+<body bgcolor="#eef5f9">
+
+<div class="tops">
+    <div class="word">
+        <h3 class="pt1">当前位置</h3>
+        <h2 class="pt3"><a href="${base }/pages/sy.jsp">管理员后台</a>>管理员账号管理</h2>
+    </div>
+</div>
+
+<div class="chart1">
+    <div class="w1">
+    <h4>Visit/click Overview</h4>
+    <h2>data statistics for Emmm</h2>
+</div>
+    <div id="morris-area-chart"></div>
+</div>
+
+<div class="chart2">
+
+    <div class="w1">
+        <h4>Our Visitors </h4>
+        <h2>Different Devices Used to Visit</h2>
+        <img src="${base}/images/chart1.png" >
+    </div>
+</div>
+
+</body>
+</html>
+
